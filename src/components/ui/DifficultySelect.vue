@@ -22,10 +22,6 @@ function getDifficultyColor(diff: Difficulty): string {
     case 'expert': return '#d94a6a';
   }
 }
-
-function getErrorIndicator(maxErrors: number): string {
-  return '❌'.repeat(Math.min(maxErrors, 5)) + (maxErrors > 5 ? `+${maxErrors - 5}` : '');
-}
 </script>
 
 <template>
@@ -47,9 +43,6 @@ function getErrorIndicator(maxErrors: number): string {
       >
         <div class="card-header">
           <span class="difficulty-name">{{ DIFFICULTY_CONFIGS[diff].name }}</span>
-          <span class="difficulty-errors" :title="`Max ${DIFFICULTY_CONFIGS[diff].maxErrors} errors allowed`">
-            {{ getErrorIndicator(DIFFICULTY_CONFIGS[diff].maxErrors) }}
-          </span>
         </div>
         <p class="difficulty-desc">{{ DIFFICULTY_CONFIGS[diff].description }}</p>
         <div class="difficulty-stats">
@@ -160,11 +153,6 @@ function getErrorIndicator(maxErrors: number): string {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--accent-color);
-}
-
-.difficulty-errors {
-  font-size: 0.75rem;
-  opacity: 0.8;
 }
 
 .difficulty-desc {

@@ -23,10 +23,10 @@ export interface DifficultyConfig {
 
 export const DIFFICULTY_CONFIGS: Record<Difficulty, DifficultyConfig> = {
   beginner: { givens: 480, minPerPlane: 45, name: 'Beginner', maxErrors: 10, description: 'Perfect for learning 3D Sudoku' },
-  easy: { givens: 400, minPerPlane: 38, name: 'Easy', maxErrors: 7, description: 'A gentle challenge' },
-  medium: { givens: 320, minPerPlane: 30, name: 'Medium', maxErrors: 5, description: 'For experienced players' },
-  hard: { givens: 240, minPerPlane: 22, name: 'Hard', maxErrors: 3, description: 'Test your skills' },
-  expert: { givens: 180, minPerPlane: 17, name: 'Expert', maxErrors: 1, description: 'One mistake and you\'re out!' }
+  easy: { givens: 400, minPerPlane: 38, name: 'Easy', maxErrors: 10, description: 'A gentle challenge' },
+  medium: { givens: 320, minPerPlane: 30, name: 'Medium', maxErrors: 10, description: 'For experienced players' },
+  hard: { givens: 240, minPerPlane: 22, name: 'Hard', maxErrors: 5, description: 'Test your skills' },
+  expert: { givens: 180, minPerPlane: 17, name: 'Expert', maxErrors: 2, description: 'Almost no room for error!' }
 };
 
 /** Game timer state */
