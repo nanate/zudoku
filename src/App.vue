@@ -442,29 +442,52 @@ onBeforeUnmount(() => {
 @media (max-width: 1024px) {
   .game-layout {
     flex-direction: column;
-    padding: 1rem;
+    padding: 0.75rem;
+    gap: 0.75rem;
   }
 
   .canvas-container {
-    flex: none;
-    height: 50vh;
-    min-height: 300px;
+    flex: 1;
+    min-height: 200px;
   }
 
   .sidebar {
     width: 100%;
     flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .sidebar > * {
-    flex: 1;
-    min-width: 200px;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    flex-shrink: 0;
   }
 
   .new-game-section {
     margin-top: 0;
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .game-layout {
+    padding: 0.5rem;
+    gap: 0.25rem;
+    position: relative;
+  }
+
+  .canvas-container {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .sidebar {
+    position: fixed;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    width: auto;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .sidebar > * {
+    pointer-events: auto;
   }
 }
 </style>

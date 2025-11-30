@@ -264,29 +264,66 @@ function handleClear() {
 
 @media (max-width: 768px) {
   .number-pad {
-    padding: 0.75rem;
+    flex-direction: row;
+    padding: 0.5rem;
     gap: 0.5rem;
   }
 
   .number-grid {
-    gap: 0.375rem;
+    gap: 0.25rem;
   }
 
   .number-btn {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
+    width: 38px;
+    height: 38px;
+    aspect-ratio: 1;
+    min-width: 0;
+    padding: 0;
+    border-radius: 6px;
   }
 
   .actions {
-    gap: 0.375rem;
+    flex-direction: column;
+    gap: 0.25rem;
   }
 
   .action-btn {
     padding: 0.5rem;
+    border-radius: 6px;
   }
 
   .action-btn svg {
     width: 18px;
     height: 18px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 400px) {
+  .number-pad {
+    padding: 0.25rem;
+    gap: 0.25rem;
+  }
+
+  .number-grid {
+    gap: 0.125rem;
+  }
+
+  .number-btn {
+    font-size: 0.875rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+  }
+
+  .action-btn {
+    padding: 0.25rem;
+  }
+
+  .action-btn svg {
+    width: 14px;
+    height: 14px;
   }
 }
 </style>
