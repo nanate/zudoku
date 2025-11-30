@@ -10,6 +10,10 @@ import { computed } from 'vue';
 import { useGameStore } from '../../stores/gameStore';
 import { DIFFICULTY_CONFIGS } from '../../types/game';
 
+const emit = defineEmits<{
+  (e: 'goHome'): void;
+}>();
+
 const store = useGameStore();
 
 const formattedTime = computed(() => {
@@ -30,8 +34,23 @@ const progressPercent = computed(() => {
 const errorCount = computed(() => store.stats.errors);
 const maxErrors = computed(() => difficultyConfig.value.maxErrors);
 const errorsRemaining = computed(() => maxErrors.value - errorCount.value);
-const isErrorDanger = computed(() => errorsRemaining.value <= 1);
-const isErrorWarning = computed(() => errorsRemaining.value <= 2 && !isErrorDanger.value);
+
+// Calculate error color gradient from yellow (0 errors) to red (max errors)
+const errorColorStyle = computed(() => {
+  const ratio = errorCount.value / maxErrors.value;
+  // Interpolate from yellow (#ffc107) to red (#ff4757)
+  // Yellow: rgb(255, 193, 7) -> Red: rgb(255, 71, 87)
+  const g = Math.round(193 - (193 - 71) * ratio);
+  const b = Math.round(7 + (87 - 7) * ratio);
+  const color = `rgb(255, ${g}, ${b})`;
+  const bgAlpha = 0.1 + ratio * 0.15; // 0.1 to 0.25
+  return {
+    '--error-color': color,
+    '--error-bg': `rgba(255, ${g}, ${b}, ${bgAlpha})`
+  };
+});
+
+const shouldPulse = computed(() => errorsRemaining.value <= 2);
 
 // Cell constraints info for hints display
 const exclusions = computed(() => store.selectedCellExclusions);
@@ -69,9 +88,9 @@ const blockedValues = computed(() => {
 <template>
   <header class="game-header-wrapper">
     <div class="game-header">
-      <div class="logo">
+      <button class="logo" @click="emit('goHome')" title="Back to menu">
         <span class="logo-z">Z</span>UDOKU
-      </div>
+      </button>
 
       <div class="game-info" v-if="store.cube">
       <div class="difficulty-badge">
@@ -92,10 +111,11 @@ const blockedValues = computed(() => {
       </div>
 
       <div class="stats">
-        <!-- Error counter with danger/warning states -->
+        <!-- Error counter with gradient color based on errors -->
         <div
           class="error-counter"
-          :class="{ danger: isErrorDanger, warning: isErrorWarning }"
+          :class="{ pulse: shouldPulse }"
+          :style="errorColorStyle"
           :title="`${errorsRemaining} errors remaining`"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -264,6 +284,15 @@ const blockedValues = computed(() => {
   font-weight: 700;
   color: white;
   letter-spacing: -0.02em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.15s ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
 }
 
 .logo-z {
@@ -354,7 +383,7 @@ const blockedValues = computed(() => {
   height: 16px;
 }
 
-/* Enhanced error counter */
+/* Enhanced error counter with gradient color */
 .error-counter {
   display: flex;
   align-items: center;
@@ -362,8 +391,8 @@ const blockedValues = computed(() => {
   padding: 0.25rem 0.625rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.1);
+  color: var(--error-color, rgba(255, 255, 255, 0.8));
+  background: var(--error-bg, rgba(255, 255, 255, 0.1));
   border-radius: 20px;
   transition: all 0.3s ease;
 }
@@ -371,6 +400,7 @@ const blockedValues = computed(() => {
 .error-counter svg {
   width: 16px;
   height: 16px;
+  stroke: var(--error-color, currentColor);
 }
 
 .error-count {
@@ -382,39 +412,16 @@ const blockedValues = computed(() => {
   font-weight: 400;
 }
 
-.error-counter.warning {
-  color: #ffb347;
-  background: rgba(255, 179, 71, 0.2);
-  animation: pulse-warning 1.5s ease-in-out infinite;
+.error-counter.pulse {
+  animation: pulse-error 1s ease-in-out infinite;
 }
 
-.error-counter.warning svg {
-  stroke: #ffb347;
-}
-
-.error-counter.danger {
-  color: #ff4757;
-  background: rgba(255, 71, 87, 0.25);
-  animation: pulse-danger 0.8s ease-in-out infinite;
-}
-
-.error-counter.danger svg {
-  stroke: #ff4757;
-}
-
-@keyframes pulse-warning {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-@keyframes pulse-danger {
+@keyframes pulse-error {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4);
   }
   50% {
-    transform: scale(1.08);
-    box-shadow: 0 0 15px 2px rgba(255, 71, 87, 0.3);
+    transform: scale(1.05);
   }
 }
 

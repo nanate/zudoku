@@ -9,7 +9,6 @@ import { DIFFICULTY_CONFIGS, type Difficulty } from '../../types/game';
 
 const emit = defineEmits<{
   (e: 'select', difficulty: Difficulty): void;
-  (e: 'daily'): void;
 }>();
 
 const difficulties: Difficulty[] = ['beginner', 'easy', 'medium', 'hard', 'expert'];
@@ -66,18 +65,6 @@ function getErrorIndicator(maxErrors: number): string {
       </button>
     </div>
 
-    <div class="daily-section">
-      <button class="daily-btn" @click="emit('daily')">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-        Daily Challenge
-      </button>
-    </div>
-
     <div class="instructions">
       <h3>How to Play</h3>
       <ul>
@@ -96,9 +83,10 @@ function getErrorIndicator(maxErrors: number): string {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   min-height: 100vh;
   padding: 2rem;
+  padding-top: 4rem;
+  overflow-y: auto;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
 
@@ -209,39 +197,10 @@ function getErrorIndicator(maxErrors: number): string {
   letter-spacing: 0.1em;
 }
 
-.daily-section {
-  margin-bottom: 3rem;
-}
-
-.daily-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 2rem;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: white;
-  background: linear-gradient(135deg, #e94560, #d94a6a);
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
-}
-
-.daily-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(233, 69, 96, 0.4);
-}
-
-.daily-btn svg {
-  width: 24px;
-  height: 24px;
-}
-
 .instructions {
-  max-width: 500px;
-  text-align: center;
+  max-width: 1100px;
+  width: 100%;
+  text-align: left;
   color: rgba(255, 255, 255, 0.5);
 }
 

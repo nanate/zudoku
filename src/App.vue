@@ -22,13 +22,15 @@ async function startGame(difficulty: Difficulty) {
   showLandingPage.value = false;
 }
 
-async function startDailyChallenge() {
-  await store.startDailyChallenge();
-  showLandingPage.value = false;
-}
 
 function returnToMenu() {
+  store.resetGame();
   showLandingPage.value = true;
+}
+
+async function tryAgain() {
+  // Start a new game with the same difficulty
+  await store.newGame(store.difficulty);
 }
 
 // Keyboard shortcuts
@@ -114,13 +116,12 @@ onBeforeUnmount(() => {
       <DifficultySelect
         v-if="showLandingPage"
         @select="startGame"
-        @daily="startDailyChallenge"
       />
     </Transition>
 
     <!-- Game View -->
     <template v-if="!showLandingPage && store.cube">
-      <GameHeader />
+      <GameHeader @go-home="returnToMenu" />
 
       <main class="game-layout">
         <div class="canvas-container">
@@ -198,8 +199,11 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="gameover-actions">
-              <button @click="returnToMenu" class="btn primary">
+              <button @click="tryAgain" class="btn primary">
                 Try Again
+              </button>
+              <button @click="returnToMenu" class="btn secondary">
+                Change Difficulty
               </button>
             </div>
           </div>
@@ -412,6 +416,15 @@ onBeforeUnmount(() => {
 
 .btn.primary:hover {
   background: #5a9fe9;
+}
+
+.btn.secondary {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Transitions */

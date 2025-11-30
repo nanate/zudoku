@@ -533,6 +533,14 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
+  // Reset game state (for returning to menu)
+  function resetGame(): void {
+    cleanup();
+    gameState.value = null;
+    validator.value = null;
+    showHints.value = false;
+  }
+
   return {
     // State
     gameState,
@@ -582,6 +590,7 @@ export const useGameStore = defineStore('game', () => {
     resumeTimer,
     saveGame,
     loadGame,
-    cleanup
+    cleanup,
+    resetGame
   };
 });
