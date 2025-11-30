@@ -473,21 +473,6 @@ export class SceneManager {
    * Update whether we're viewing front or back based on current plane index
    */
   updateViewingPosition(currentIndex: number): void {
-    const camPos = this.camera.position;
-    const absX = Math.abs(camPos.x);
-    const absY = Math.abs(camPos.y);
-    const absZ = Math.abs(camPos.z);
-
-    let frontIndex: number;
-
-    if (absZ >= absX && absZ >= absY) {
-      frontIndex = camPos.z > 0 ? 8 : 0;
-    } else if (absY >= absX && absY >= absZ) {
-      frontIndex = camPos.y > 0 ? 8 : 0;
-    } else {
-      frontIndex = camPos.x > 0 ? 8 : 0;
-    }
-
     // Determine if current index is closer to front or back
     // Front planes are 8, 7, 6... Back planes are 0, 1, 2...
     this.viewingFrontPlane = currentIndex >= 4;

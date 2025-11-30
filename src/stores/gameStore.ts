@@ -19,7 +19,7 @@ import {
 import { extractPlane } from '../types/cube';
 import { generateSolution, getDailySeed } from '../engine/generator';
 import { createPuzzle, countEmptyCells, isPuzzleComplete } from '../engine/difficulty';
-import { CubeValidator, type ExclusionInfo, type BlockerInfo } from '../engine/validator';
+import { CubeValidator, type ExclusionInfo } from '../engine/validator';
 
 export const useGameStore = defineStore('game', () => {
   // ============ State ============

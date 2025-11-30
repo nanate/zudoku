@@ -128,7 +128,6 @@ function swapRowsInBand(cube: CubeValues, z: number, band: number, perm: number[
 function swapColsInBand(cube: CubeValues, z: number, band: number, perm: number[]): void {
   const baseCol = band * 3;
   const cols = [baseCol, baseCol + 1, baseCol + 2];
-  const newCols = [cols[perm[0]!]!, cols[perm[1]!]!, cols[perm[2]!]!];
 
   for (let y = 0; y < 9; y++) {
     const temp = [
