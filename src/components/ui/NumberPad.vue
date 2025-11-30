@@ -261,4 +261,32 @@ function handleClear() {
   60% { transform: translateX(-6px); }
   80% { transform: translateX(6px); }
 }
+
+@media (max-width: 768px) {
+  .number-pad {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .number-grid {
+    gap: 0.375rem;
+  }
+
+  .number-btn {
+    font-size: 1.25rem;
+  }
+
+  .actions {
+    gap: 0.375rem;
+  }
+
+  .action-btn {
+    padding: 0.5rem;
+  }
+
+  .action-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
 </style>

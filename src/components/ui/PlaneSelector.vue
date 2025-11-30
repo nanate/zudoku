@@ -195,4 +195,37 @@ function navigateBackward() {
   background: #4a90d9;
   color: white;
 }
+
+@media (max-width: 768px) {
+  .plane-selector {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .current-axis {
+    display: none;
+  }
+
+  .plane-navigator {
+    gap: 0.5rem;
+  }
+
+  .nav-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .plane-number {
+    font-size: 1.25rem;
+  }
+
+  .plane-label {
+    font-size: 0.875rem;
+  }
+}
 </style>

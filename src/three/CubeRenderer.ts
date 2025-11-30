@@ -530,6 +530,8 @@ export class CubeRenderer {
   showRelatedCells(pos: Position): void {
     this.clearRelatedHighlights();
 
+    if (!this.activePlane) return;
+
     // Only highlight cells in the active plane
     for (let z = 0; z < 9; z++) {
       for (let y = 0; y < 9; y++) {
@@ -539,14 +541,39 @@ export class CubeRenderer {
           const state = this.cellStates[z]?.[y]?.[x];
           if (!state || !state.isInActivePlane) continue;
 
-          // Check if cell is in same row, column, or 3x3 block
-          const onXLine = y === pos.y && z === pos.z;
-          const onYLine = x === pos.x && z === pos.z;
-          const sameBlock = z === pos.z &&
-            Math.floor(x / 3) === Math.floor(pos.x / 3) &&
-            Math.floor(y / 3) === Math.floor(pos.y / 3);
+          // Check if cell is in same row, column, or 3x3 block based on active plane axis
+          let onLine1 = false;
+          let onLine2 = false;
+          let sameBlock = false;
 
-          if (onXLine || onYLine || sameBlock) {
+          switch (this.activePlane.axis) {
+            case 'XY':
+              // Looking at front/back (Z is constant)
+              onLine1 = y === pos.y && z === pos.z;  // Same row (horizontal)
+              onLine2 = x === pos.x && z === pos.z;  // Same column (vertical)
+              sameBlock = z === pos.z &&
+                Math.floor(x / 3) === Math.floor(pos.x / 3) &&
+                Math.floor(y / 3) === Math.floor(pos.y / 3);
+              break;
+            case 'XZ':
+              // Looking at top/bottom (Y is constant)
+              onLine1 = z === pos.z && y === pos.y;  // Same row (horizontal in this view)
+              onLine2 = x === pos.x && y === pos.y;  // Same column (vertical in this view)
+              sameBlock = y === pos.y &&
+                Math.floor(x / 3) === Math.floor(pos.x / 3) &&
+                Math.floor(z / 3) === Math.floor(pos.z / 3);
+              break;
+            case 'YZ':
+              // Looking at left/right (X is constant)
+              onLine1 = z === pos.z && x === pos.x;  // Same row (horizontal in this view)
+              onLine2 = y === pos.y && x === pos.x;  // Same column (vertical in this view)
+              sameBlock = x === pos.x &&
+                Math.floor(y / 3) === Math.floor(pos.y / 3) &&
+                Math.floor(z / 3) === Math.floor(pos.z / 3);
+              break;
+          }
+
+          if (onLine1 || onLine2 || sameBlock) {
             state.isRelated = true;
             this.updateCellMaterial(x, y, z);
           }
