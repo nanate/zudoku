@@ -37,8 +37,11 @@ onMounted(() => {
   });
 
   sceneManager.onCellHovered((pos: Position | null) => {
-    if (pos && store.selectedCell) {
+    // When hovering, show highlights for hovered cell, otherwise revert to selected cell
+    if (pos) {
       sceneManager?.showRelatedCells(pos);
+    } else if (store.selectedCell) {
+      sceneManager?.showRelatedCells(store.selectedCell);
     }
   });
 
