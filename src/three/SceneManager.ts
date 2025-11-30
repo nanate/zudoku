@@ -44,6 +44,10 @@ export class SceneManager {
   private raycaster = new THREE.Raycaster();
   private mouse = new THREE.Vector2();
 
+  // Debounce plane changes to prevent jitter
+  private lastPlaneChangeTime: number = 0;
+  private readonly planeChangeDebounceMs: number = 150;
+
   private options: SceneManagerOptions;
 
   constructor(options: SceneManagerOptions = {}) {
@@ -416,7 +420,7 @@ export class SceneManager {
 
     // Threshold: new axis must be this much more dominant to trigger a switch
     // This creates "stickiness" to the current axis
-    const threshold = 1.8; // 80% more dominant required to switch
+    const threshold = 2.0; // 100% more dominant required to switch
 
     let axis: 'XY' | 'XZ' | 'YZ';
     let frontIndex: number;
@@ -482,6 +486,7 @@ export class SceneManager {
    * Check and update dominant plane based on camera position
    * Triggers when axis changes OR when camera side changes
    * When switching axes, maps the plane to maintain the same view-relative position
+   * Includes debouncing to prevent rapid jittery changes
    */
   private checkPlaneChange(): void {
     const { axis } = this.getDominantViewAxisAndIndex();
@@ -491,6 +496,13 @@ export class SceneManager {
     const cameraSideChanged = newCameraSide !== this.cameraOnPositiveSide;
 
     if (axisChanged || cameraSideChanged) {
+      // Debounce: don't trigger changes too rapidly
+      const now = performance.now();
+      if (now - this.lastPlaneChangeTime < this.planeChangeDebounceMs) {
+        return;
+      }
+      this.lastPlaneChangeTime = now;
+
       // Calculate the current view-relative index (1-9, where 1=back, 9=front)
       let viewRelativeIndex: number;
       if (this.cameraOnPositiveSide) {
