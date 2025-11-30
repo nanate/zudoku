@@ -36,13 +36,8 @@ onMounted(() => {
     store.selectCell(pos);
   });
 
-  sceneManager.onCellHovered((pos: Position | null) => {
-    // When hovering, show highlights for hovered cell, otherwise revert to selected cell
-    if (pos) {
-      sceneManager?.showRelatedCells(pos);
-    } else if (store.selectedCell) {
-      sceneManager?.showRelatedCells(store.selectedCell);
-    }
+  sceneManager.onCellHovered(() => {
+    // Hover highlighting disabled - only highlight on selection
   });
 
   // Auto-switch plane based on camera orientation (selects back plane)

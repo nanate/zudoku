@@ -18,7 +18,7 @@ const COLORS = {
   // Selected cell - bright cyan/teal for maximum visibility
   cellSelected: 0x00d4aa,
   cellHovered: 0x5a8a9a,
-  cellRelated: 0x3a5a6a,
+  cellRelated: 0x5a9aba,
   cellError: 0xcc4444,
   cellInactivePlane: 0x1a1a2a,
   // Active plane cells - distinct blue-purple tint
@@ -252,6 +252,8 @@ export class CubeRenderer {
         emissiveIntensity = 0.15;
       } else if (isRelated) {
         color = COLORS.cellRelated;
+        emissive = COLORS.cellRelated;
+        emissiveIntensity = 0.3;
       } else if (isGiven) {
         // Active plane given cells have distinct color
         color = COLORS.cellActivePlaneGiven;
