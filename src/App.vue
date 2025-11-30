@@ -468,6 +468,7 @@ onBeforeUnmount(() => {
 @media (max-width: 768px) {
   .game-layout {
     padding: 0.5rem;
+    padding-bottom: 8rem; /* Space for number pad so cube centers above it */
     gap: 0.25rem;
     position: relative;
   }
